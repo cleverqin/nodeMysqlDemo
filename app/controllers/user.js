@@ -1,4 +1,5 @@
 var userDao = require('../dao/userDao');
+var bcrypt = require('bcrypt-nodejs')
 // signup
 exports.register = function(req, res) {
     res.render('register', {
@@ -7,6 +8,7 @@ exports.register = function(req, res) {
 }
 exports.userRegister = function(req, res) {
     var user = req.body;
+    user.password = bcrypt.hashSync(user.password);
     userDao.add(user,function (result) {
         if(result){
             res.redirect('/user/list');
@@ -14,7 +16,6 @@ exports.userRegister = function(req, res) {
             res.redirect('/');
         }
     })
-
 }
 exports.login = function(req, res) {
     res.render('login', {
@@ -23,10 +24,33 @@ exports.login = function(req, res) {
 }
 exports.userLogin = function(req, res) {
     var user=req.body;
-    console.log(user);
-    res.json({
-        msg: '登录成功'
-    })
+    userDao.queryByName(user.name,function (results) {
+        if(!results.length>0&&results){
+            res.json({
+                status: 0,
+                msg:"用户名不存在！"
+            })
+        }else {
+
+            if(bcrypt.compareSync(user.password, results[0].password)){
+                req.session.user = results[0];
+                res.json({
+                    status: 1,
+                    msg:"登录成功！"
+                })
+            }else {
+                res.json({
+                    status: 0,
+                    msg:"密码错误！"
+                })
+            }
+        }
+    });
+}
+// logout
+exports.logout =  function(req, res) {
+    delete req.session.user
+    res.redirect('/')
 }
 exports.userList = function(req, res) {
     userDao.queryAll(function (results) {
@@ -67,6 +91,7 @@ exports.detail = function(req, res) {
 }
 exports.userUpdate = function(req, res) {
     var user= req.body;
+    user.password = bcrypt.hashSync(user.password);
     userDao.update(user,function (results) {
         if(results){
             res.redirect('/user/list');
@@ -74,4 +99,11 @@ exports.userUpdate = function(req, res) {
             res.redirect('/');
         }
     });
+}
+exports.loginRequired = function(req, res, next) {
+    var user = req.session.user;
+    if (!user) {
+        return res.redirect('/login')
+    }
+    next()
 }

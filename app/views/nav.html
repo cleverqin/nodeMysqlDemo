@@ -1,0 +1,26 @@
+<div class="navbar-inverse ">
+    <nav class="container" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">LOGO</a>
+        </div>
+        <ul class="nav navbar-nav ">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/user/list">列表</a>
+            </li>
+        </ul>
+        <div class="navbar-text navbar-right">
+            <% if( user ){ %>
+            <a href="#" class="navbar-link"><%= user.nick_name%></a>
+            <span>&nbsp;|&nbsp;</span>
+            <a href="/logOut" class="navbar-link">退出</a>
+            <% }else{ %>
+            <a href="/login" class="navbar-link">登录</a>
+            <span>&nbsp;|&nbsp;</span>
+            <a href="/register" class="navbar-link">注册</a>
+            <%}%>
+        </div>
+    </nav>
+</div>

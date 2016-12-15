@@ -2,6 +2,7 @@ var mysql = require('mysql');
 var $sql = require('./userSqlMapping');
 var $conf = require('../mysqlDB/db');
 var uuid = require('node-uuid');
+
 // 使用连接池，提升性能
 var pool  = mysql.createPool($conf.mysql);
 var getId = function(){
@@ -10,12 +11,10 @@ var getId = function(){
 module.exports = {
     add: function (user,callback) {
         pool.getConnection(function(err, connection) {
-            // 建立连接，向表中插入值
             connection.query($sql.insert, [getId(),user.name, user.password,user.nickName], function(err, result) {
                 callback(result);
                 // 释放连接
                 connection.release();
-
             });
         });
     },
