@@ -1,5 +1,5 @@
 $(function () {
-    $('form').validate({
+    $('#loginForm').validate({
         rules: {
             name: {
                 required: true,
@@ -38,7 +38,7 @@ $(function () {
                     if(data.status==0){
                         $("#form-error").text(data.msg)
                     }else {
-                        window.location.href="/"
+                        window.location.href="/";
                     }
                 }
             })

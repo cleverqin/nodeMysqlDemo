@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <% include head.html %>
-    <link src="../libs/css/bootstrapValidator.min.css" rel='stylesheet' />
     <style>
         input.error,input.error:focus{border-color: #a94442;}
         #form-error,.error{color: #a94442;}
@@ -16,7 +15,7 @@
 </body>
 <% include nav.html %>
 <div class='container'>
-    <form name="loginForm" class='form-horizontal'>
+    <form name="loginForm" class='form-horizontal' id="loginForm">
         <h1>用户登录</h1>
         <div id="form-error"></div>
         <div class='form-group'>
