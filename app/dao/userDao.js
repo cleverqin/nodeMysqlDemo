@@ -1,17 +1,14 @@
 var mysql = require('mysql');
 var $sql = require('./userSqlMapping');
 var $conf = require('../mysqlDB/db');
-var uuid = require('node-uuid');
 
 // 使用连接池，提升性能
 var pool  = mysql.createPool($conf.mysql);
-var getId = function(){
-    return uuid.v4().replace(/-/g,'');
-}
+
 module.exports = {
     add: function (user,callback) {
         pool.getConnection(function(err, connection) {
-            connection.query($sql.insert, [getId(),user.name, user.password,user.nickName], function(err, result) {
+            connection.query($sql.insert, [user.name, user.password,user.nickName], function(err, result) {
                 callback(result);
                 // 释放连接
                 connection.release();
@@ -42,6 +39,15 @@ module.exports = {
     update: function (user,callback) {
         pool.getConnection(function(err, connection) {
             connection.query($sql.update, [user.password,user.nickName,user.userID], function(err, result) {
+                callback(result);
+                connection.release();
+            });
+        });
+
+    },
+    updateUserPic: function (user,callback) {
+        pool.getConnection(function(err, connection) {
+            connection.query($sql.updateUserPic, [user.userPic,user.userID], function(err, result) {
                 callback(result);
                 connection.release();
             });

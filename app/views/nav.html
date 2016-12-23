@@ -13,7 +13,10 @@
         </ul>
         <div class="navbar-text navbar-right">
             <% if( user ){ %>
-            <a href="#" class="navbar-link"><%= user.nick_name%></a>
+            <a href="/userCenter" class="navbar-link">
+                <img src="../static/images/<%= user.user_pic %>" class="user_pic">
+                <%= user.nick_name%>
+            </a>
             <span>&nbsp;|&nbsp;</span>
             <a href="/logOut" class="navbar-link">退出</a>
             <% }else{ %>

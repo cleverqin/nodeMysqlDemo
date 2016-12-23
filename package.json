@@ -10,6 +10,8 @@
     "ejs": "^2.5.2",
     "express": "^4.14.0",
     "express-session": "^1.14.2",
+    "moment": "^2.17.1",
+    "multer": "^1.2.1",
     "mysql": "^2.12.0",
     "node-uuid": "^1.4.7"
   },

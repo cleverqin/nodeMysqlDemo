@@ -5,6 +5,7 @@
     <% include head.html %>
     <title><%= title %></title>
     <link rel="stylesheet" type="text/css" href="../libs/css/jquery.jgrowl.css"/>
+    <script src="../libs/js/popconfirm.js" type='text/javascript'></script>
     <script src="../libs/js/jquery.jgrowl.js" type='text/javascript'></script>
     <script src="../js/userList.js" type='text/javascript'></script>
 </head>
@@ -16,8 +17,10 @@
         <tr>
             <th class="text-center">序号</th>
             <th class="text-center">ID</th>
+            <th class="text-center">头像</th>
             <th class="text-center">账号</th>
             <th class="text-center">昵称</th>
+            <th class="text-center">注册时间</th>
             <th class="text-center">操作</th>
         </tr>
         </thead>
@@ -26,17 +29,18 @@
         <tr data-id="<%= users[i].user_id %>">
             <td><%= i %></td>
             <td><%= users[i].user_id %></td>
+            <td class="text-center"><img src="../static/images/<%= users[i].user_pic %>" class="user_pic"></td>
             <td><%= users[i].user_name %></td>
             <td><%= users[i].nick_name %></td>
+            <td><%=moment(users[i].register_date).format('YYYY-MM-DD h:mm:ss') %></td>
             <td class="text-center">
-                <button type='button' class='btn btn-danger'>删除</button>
+                <button type='button' class='btn btn-danger del' >删除</button>
                 <a href="/userDetail/<%= users[i].user_id %>" class="btn btn-primary">查看</a>
             </td>
         </tr>
         <% } %>
         </tbody>
     </table>
-
 </div>
 </body>
 </html>

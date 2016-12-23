@@ -1,5 +1,5 @@
 var userDao = require('../dao/userDao');
-var bcrypt = require('bcrypt-nodejs')
+var bcrypt = require('bcrypt-nodejs');
 // signup
 exports.register = function(req, res) {
     res.render('register', {
@@ -106,4 +106,35 @@ exports.loginRequired = function(req, res, next) {
         return res.redirect('/login')
     }
     next()
+}
+exports.updateUserPic = function(req, res) {
+    var user = req.session.user;
+    var userPic=req.body.userPic;
+    user.userID=user.user_id;
+    user.userPic=userPic;
+    userDao.updateUserPic(user,function (results) {
+        if(results){
+            user.user_pic=userPic;
+            req.session.user=user;
+            var resJson={
+                status:1,
+                msg:"修改成功！"
+            }
+        }else {
+            resJson={
+                status:0,
+                msg:"修改失败！"
+            }
+        }
+        res.json(resJson)
+    })
+}
+exports.userCenter = function(req, res) {
+    var user = req.session.user;
+    userDao.queryByID(user.user_id,function (results) {
+        res.render('userCenter', {
+            title: '个人中心',
+            userInfo:results[0]
+        })
+    });
 }
