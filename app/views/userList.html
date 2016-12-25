@@ -7,7 +7,12 @@
     <link rel="stylesheet" type="text/css" href="../libs/css/jquery.jgrowl.css"/>
     <script src="../libs/js/popconfirm.js" type='text/javascript'></script>
     <script src="../libs/js/jquery.jgrowl.js" type='text/javascript'></script>
+    <script src="../libs/js/jquery.page.js" type='text/javascript'></script>
     <script src="../js/userList.js" type='text/javascript'></script>
+    <script>
+        var pageCount='<%= pageCount %>';
+        var current='<%= current %>';
+    </script>
 </head>
 <body>
 <% include nav.html %>
@@ -41,6 +46,7 @@
         <% } %>
         </tbody>
     </table>
+    <div id="pageNavBox" class="pageNavBox"></div>
 </div>
 </body>
 </html>

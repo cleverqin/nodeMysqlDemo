@@ -72,10 +72,20 @@ module.exports = {
             });
         });
     },
-    queryAll: function (callback) {
+    queryAll: function (pageNum,pageSize,callback) {
+        pageSize=parseInt(pageSize);
+        var startNum=(pageNum-1)*pageSize;
+        var res={};
         pool.getConnection(function(err, connection) {
-            connection.query($sql.queryAll, function(err, result) {
-                callback(result);
+            connection.query($sql.queryAll,[startNum,pageSize],function(err, result) {
+                if(err){
+                    console.log(err)
+                }
+                res.list=result;
+            });
+            connection.query($sql.queryCountNum,function(err, result) {
+                res.pageCount=Math.ceil(result[0].countNum/pageSize);
+                callback(res);
                 connection.release();
             });
         });

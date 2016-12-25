@@ -88,3 +88,34 @@ nav .user_pic{
     background-color: rgba(0, 0, 0, 0.6);
     cursor: pointer;
 }
+/***********************************************/
+.pageNavBox{
+    padding: 15px 20px;
+    color: #ccc;
+    text-align:center;
+}
+.pageNavBox a{
+    color: #428bca;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    margin-left: 5px;
+}
+.pageNavBox a:hover{
+    text-decoration: none;
+    border: 1px solid #428bca;
+}
+.pageNavBox span.current{
+    padding: 10px 15px;
+    color: #fff;
+    background-color: #428bca;
+    border: 1px solid #428bca;
+}
+.pageNavBox span.disabled{
+    padding: 10px 15px;
+    color: #bfbfbf;
+    background: #f2f2f2;
+    border: 1px solid #bfbfbf;  }
+.pageNavBox span{
+    padding: 10px 0px;
+    margin-left: 5px;
+}

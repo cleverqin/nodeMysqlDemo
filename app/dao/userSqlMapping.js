@@ -4,7 +4,8 @@ var user = {
     delete: 'delete from user_tb where user_id=?',
     queryByName: 'select * from user_tb where user_name=?',
     queryByID: 'select * from user_tb where user_id=?',
-    queryAll: 'select * from user_tb',
+    queryAll: 'select * from user_tb LIMIT ?,?',
+    queryCountNum: 'SELECT COUNT(*) AS countNum FROM user_tb',
     updateUserPic:"update user_tb set  user_pic=? where user_id=?"
 };
 

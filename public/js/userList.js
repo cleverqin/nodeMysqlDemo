@@ -24,4 +24,23 @@ $(function () {
         content: "你确定要删除吗？",
         placement: "left"
     });
+    $("#pageNavBox").createPage({
+        pageCount:parseInt(pageCount),
+        current:parseInt(current),
+        backFn:function(p){
+            var pageSize=getQueryString('pageSize');
+            if(!pageSize){
+                pageSize=10;
+            }
+            window.location.href="/user/list?pageNum="+p+"&&pageSize="+pageSize;
+        }
+    });
+    function getQueryString(name) {
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return unescape(r[2]);
+        }
+        return null;
+    }
 })

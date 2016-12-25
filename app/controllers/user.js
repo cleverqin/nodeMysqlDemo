@@ -53,10 +53,21 @@ exports.logout =  function(req, res) {
     res.redirect('/')
 }
 exports.userList = function(req, res) {
-    userDao.queryAll(function (results) {
+    var pageNum =req.query.pageNum;
+    var pageSize=req.query.pageSize;
+    var reg=/^\+?[1-9][0-9]*$/;
+    if(!reg.test(pageNum)){
+        pageNum=1;
+    }
+    if(!reg.test(pageSize)){
+        pageSize=10;
+    }
+    userDao.queryAll(pageNum,pageSize,function (results) {
         res.render('userList', {
             title: '用户列表',
-            users:results
+            users:results.list,
+            pageCount:results.pageCount,
+            current:pageNum
         })
     });
 }
@@ -85,7 +96,7 @@ exports.detail = function(req, res) {
     userDao.queryByID(userID,function (results) {
         res.render('userDetail', {
             title: '用户详情',
-            user:results[0]
+            userInfo:results[0]
         })
     });
 }
