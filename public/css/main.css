@@ -119,3 +119,143 @@ nav .user_pic{
     padding: 10px 0px;
     margin-left: 5px;
 }
+/**********************/
+.trends-list{
+    list-style: none;
+    padding: 0;
+}
+.user-picBox{
+    float: left;
+}
+.user-picBox{
+    width: 60px;
+    height: 60px;
+}
+.user-picBox img{
+    width: 100%;
+    height: 100%;
+}
+.trends-contentBox{
+    margin-left: 65px;
+}
+.trends-contentBox p{
+    font-weight: bold;
+}
+.trends-contentBox p span{
+    font-weight: normal;
+    margin-left: 15px;
+}
+.trends-item{
+    margin-bottom: 15px;
+}
+/**************************************/
+.img-cropperBox{
+    position: relative;
+}
+.img-cropperBox:after{
+    display: table;
+    clear: both;
+    content: '';
+}
+.cropper-left{
+    margin-right: 165px;
+}
+.cropper-right{
+    width: 160px;
+    position: absolute;
+    top:0;
+    right: 0;
+}
+.img-container {
+    height: 300px;
+    overflow: hidden;
+}
+.img-container > img {
+    max-width: 100%;
+}
+
+.img-preview {
+    float: left;
+    overflow: hidden;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+.img-preview > img {
+    max-width: 100%;
+}
+
+.preview-lg {
+    width: 255px;
+    height: 143px;
+}
+
+.preview-md {
+    width: 128px;
+    height: 72px;
+}
+
+.preview-sm {
+    width: 72px;
+    height: 41px;
+}
+
+.preview-xs {
+    width: 40px;
+    height: 24px;
+    margin-right: 0;
+}
+.crl-box button,.crl-box label{
+    margin: 0 0 8px 8px;
+}
+/********************************************/
+.ui-upload-btn{
+    display: inline-block;
+    width: 140px;
+    height: 140px;
+    border: 1px dashed #7cb1f3;
+    border-radius: 7px;
+    font-size: 80px;
+    text-align: center;
+    line-height: 130px;
+    vertical-align: middle;
+    color: #ccc;
+    position: relative;
+}
+.ui-upload-btn input{
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    opacity: 0;
+    cursor: pointer;
+}
+.ui-preview-list{
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    float: left;
+}
+.ui-preview-item{
+    width: 140px;
+    height: 140px;
+    border: 1px dashed #7cb1f3;
+    border-radius: 7px;
+    float: left;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+.ui-preview-item img{
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #fff;
+    outline: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 7px;
+}

@@ -1,14 +1,17 @@
 var mysql = require('mysql');
 var $sql = require('./userSqlMapping');
 var $conf = require('../mysqlDB/db');
-
+var util=require('../util/util');
 // 使用连接池，提升性能
 var pool  = mysql.createPool($conf.mysql);
 
 module.exports = {
     add: function (user,callback) {
         pool.getConnection(function(err, connection) {
-            connection.query($sql.insert, [user.name, user.password,user.nickName], function(err, result) {
+            connection.query($sql.insert, [user.name, user.password,user.nickName,new Date().Format("yyyy-MM-dd hh:mm:ss")], function(err, result) {
+                if(err){
+                    console.log(err)
+                }
                 callback(result);
                 // 释放连接
                 connection.release();

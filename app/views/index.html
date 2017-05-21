@@ -8,7 +8,166 @@
 <body>
     <% include nav.html %>
     <div class="container">
-        <h1>Index</h1>
+        <h1>发表动态</h1>
+        <% if( user ){ %>
+        <form name="registerForm" action="/addTrends" method="post" class='form-horizontal'>
+            <div class='form-group'>
+                <label class='control-label col-sm-2'>用户：</label>
+                <div class="col-sm-4"><input type="text" name='userID'class='form-control' value="<%= user.user_id%>" id="userID"/></div>
+            </div>
+            <div class='form-group'>
+                <label class='control-label col-sm-2'>内容：</label>
+                <div class="col-sm-4"><textarea class='form-control' name="contentTxt" id="contentTxt"></textarea></div>
+            </div>
+            <div class='form-group'>
+                <label class='control-label col-sm-2'>图片：</label>
+                <div class="col-sm-10">
+                    <div class="ui-img-upload">
+                        <ul class="ui-preview-list"></ul>
+                        <div class="ui-upload-btn">
+                            +
+                            <input type="file" accept="accept='image/gif, image/jpeg,image/png" class='img-file' id="upload">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='form-group'>
+                <div class='col-sm-offset-2 col-sm-4'>
+                    <input type='button' value='发表动态' class='btn btn-primary' id="postBtn"/>
+                </div>
+            </div>
+        </form>
+        <script>
+            (function () {
+                function UploadFile(options){
+                    var deafultOpt={
+                        action:"",//上传文件的接口地址
+                        name:"file",//字段名
+                        file:'',//要上传的文件
+                        beforeUpload:function () {return true},//上传之前的执行的函数,返回true执行上传操作否则不执行
+                        success:null,//上传成功的回调函数
+                        error:null,//上传失败的回调函数
+                        progress:null//上传失败的回调函数
+                    }
+                    this.option=extend(deafultOpt,options);
+                    this.init();
+                }
+                UploadFile.prototype={
+                    init:function () {
+                        if(this.option.beforeUpload()){
+                            this.upLoad();
+                        }
+                    },
+                    upLoad:function () {
+                        var _this=this;
+                        var fd = new FormData(),
+                            xhr = new XMLHttpRequest();
+                        fd.append(_this.option.name, _this.option.file);
+                        xhr.open('post', _this.option.action);
+                        xhr.onreadystatechange = function(event){
+                            if(xhr.status == 200){
+                                if(xhr.readyState == 4){
+                                    console.log('上传成功')
+                                    _this.option.success&&_this.option.success(xhr.response);
+                                }
+                            }else{
+                                console.log('上传失败');
+                                _this.option.error&&_this.option.error(xhr.response);
+                            }
+                        }
+                        xhr.upload.onprogress = function(event){
+                            var pre = Math.floor(100 * event.loaded / event.total);
+                            console.log(pre);
+                            _this.option.progress&&_this.option.progress(pre);
+                        }
+                        xhr.send(fd);
+                    }
+                }
+                function cloneObj(oldObj) { //复制对象方法
+                    if (typeof(oldObj) != 'object') return oldObj;
+                    if (oldObj == null) return oldObj;
+                    var newObj = new Object();
+                    for (var i in oldObj)
+                        newObj[i] = cloneObj(oldObj[i]);
+                    return newObj;
+                };
+                function extend() { //扩展对象
+                    var args = arguments;
+                    if (args.length < 2) return;
+                    var temp = cloneObj(args[0]); //调用复制对象方法
+                    for (var n = 1; n < args.length; n++) {
+                        for (var i in args[n]) {
+                            temp[i] = args[n][i];
+                        }
+                    }
+                    return temp;
+                }
+                window.UploadFile=UploadFile;
+            })(window)
+            var picList=[];
+            $('#postBtn').on('click',function (e) {
+                var trends={
+                    userID:$('#userID').val(),
+                    contentTxt:$('#contentTxt').val(),
+                    picList:picList.join(',')
+                }
+                $.ajax({
+                    url:"/addTrends",
+                    type:"post",
+                    data:trends,
+                    success:function (res) {
+                       $.showMsg({msg:res.msg})
+                    }
+                })
+            })
+            var upload=document.getElementById('upload');
+            function displayImg(file) {
+                var imgSrc=URL.createObjectURL(file);
+                var html= '<li class="ui-preview-item"><img src="'+imgSrc+'"></li>';
+                var list=document.querySelector('.ui-preview-list');
+                list.innerHTML+=html;
+            }
+            upload.addEventListener('change',function (e) {
+                displayImg(this.files[0]);
+                new UploadFile({
+                    action:'/imgUpload',
+                    name:'file',
+                    file:this.files[0],
+                    progress:function (pre) {
+                       console.log(pre)
+                    },
+                    success:function (res) {
+                        var result=JSON.parse(res);
+                        var arr=result.data.file.path.split("\\");
+                        var url=arr[arr.length-1];
+                        picList.push(url);
+                        console.log(picList);
+                    },
+                    error:function (res) {
+                        console.log(JSON.parse(res));
+                    }
+                })
+            })
+        </script>
+        <% }%>
+        <ul class="trends-list">
+            <% for(var index in trends) {%>
+            <li class="trends-item clearfix">
+                <div class="user-picBox"><img src="./static/images/<%= trends[index].user_pic %>" class="img-circle"/></div>
+                <div class="trends-contentBox">
+                    <p><%= trends[index].nick_name %><span><%=moment(trends[index].create_date).format('YYYY-MM-DD h:mm:ss') %></span></p>
+                    <div><%= trends[index].trends_content %></div>
+                    <% if( trends[index].pic_list ){ %>
+                    <div>
+                        <% for(var i in trends[index].pic_list) {%>
+                        <img src="./static/images/<%= trends[index].pic_list[i] %>" width="138" height="138">
+                        <% }%>
+                    </div>
+                    <% }%>
+                </div>
+            </li>
+            <% }%>
+        </ul>
     </div>
 </body>
 </html>

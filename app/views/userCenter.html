@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <% include head.html %>
     <title><%= title %></title>
-    <script src="tool/js/iscroll-zoom.js"></script>
-    <script src="tool/js/hammer.min.js"></script>
-    <script src="tool/js/lrz.all.bundle.js"></script>
-    <script src="tool/js/PhotoClip.min.js"></script>
+    <link href="./css/cropper.min.css" rel="stylesheet">
+    <style>
+    </style>
+    <script type='text/javascript' src='./libs/js/cropper.min.js'></script>
     <script type='text/javascript' src='js/userCenter.js'></script>
 </head>
 <body>
@@ -39,7 +39,7 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" style="z-index: 1070">
             <div class="modal-content">
                 <div class="modal-header">
@@ -47,11 +47,30 @@
                     <h4 class="modal-title" id="myModalLabel">修改头像</h4>
                     <div class="clearfix clip-header">
                         <label class="pull-left">选择图片：</label>
-                        <input type="file" id="file" class="pull-left">
+                        <label class="btn btn-primary btn-upload" for="inputImage" title="Upload image file">
+                            <input type="file" class="sr-only" id="inputImage" name="file" accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff">
+                            <span class="docs-tooltip" data-toggle="tooltip" title="Import image with Blob URLs">
+                                        <span class="glyphicon glyphicon-cloud-upload"></span>
+                            </span>
+                        </label>
                     </div>
                 </div>
                 <div class="modal-body">
-                    <div class="clip-body"><div id="clipArea"></div><div id="view"></div></div>
+                    <div class="img-cropperBox">
+                        <div class="cropper-left">
+                            <div class="img-container">
+                                <img src="../static/images/<%= userInfo.user_pic %>" alt="Picture">
+                            </div>
+                        </div>
+                        <div class="cropper-right">
+                            <div class="docs-preview clearfix">
+                                <div class="img-preview preview-lg"></div>
+                                <div class="img-preview preview-md"></div>
+                                <div class="img-preview preview-sm"></div>
+                                <div class="img-preview preview-xs"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="clipBtn">截取并上传</button>

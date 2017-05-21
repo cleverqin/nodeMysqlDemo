@@ -1,8 +1,31 @@
 var Index = require('../app/controllers/index');
 var User = require('../app/controllers/user');
+var Trends = require('../app/controllers/trends');
 var multer  = require('multer');
+var formidable=require('formidable');
 var upload = multer({ dest: 'public/static/images' });
 var fs = require("fs");
+function formidableFormParse(req,callback){
+    var obj ={};
+    var form = new formidable.IncomingForm({
+        encoding:"utf-8",
+        uploadDir:"./public/static/images/",  //文件上传地址
+        keepExtensions:true  //保留后缀
+    });
+    form.parse(req)
+        .on('field', function(name, value) {  // 字段
+            obj[name] = value;
+        })
+        .on('file', function(name, file) {  //文件
+            obj[name] = file;
+        })
+        .on('error', function(error) {  //结束
+            callback(error);
+        })
+        .on('end', function() {  //结束
+            callback(null,obj);
+        });
+}
 module.exports = function(app) {
     // pre handle user
     app.use(function(req, res, next) {
@@ -13,29 +36,11 @@ module.exports = function(app) {
     // Index
     app.get('/', Index.index);
     app.post('/imgUpload',function (req, res) {
-        //接收前台POST过来的base64
-        var imgData = req.body.imgData;
-        var basePath="./public/static/images/";
-        var storePath=new Date().getTime()+".png";
-        //过滤data:URL
-        var base64Data = imgData.replace(/^data:image\/\w+;base64,/, "");
-        var dataBuffer = new Buffer(base64Data, 'base64');
-        fs.writeFile( basePath+storePath, dataBuffer, function(err) {
-            if(err){
-                var response={
-                    status:0,
-                    msg:"图片保存失败",
-                    err:err
-                }
-            }else{
-                response={
-                    status:1,
-                    msg:"图片保存成功",
-                    fileName:storePath
-                }
-            }
-            res.json(response);
-        });
+        formidableFormParse(req,function (err,obj) {
+            res.json({
+                data:obj
+            })
+        })
     })
     // user
     app.get('/register', User.register);
@@ -50,4 +55,5 @@ module.exports = function(app) {
     app.get('/userDetail/:id',User.loginRequired, User.detail);
     app.post('/updateUserPic',User.loginRequired,User.updateUserPic);
     app.get('/userCenter',User.loginRequired, User.userCenter);
+    app.post('/addTrends',User.loginRequired,Trends.addTrends)
 }
